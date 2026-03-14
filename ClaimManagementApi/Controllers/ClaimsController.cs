@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClaimManagementApi.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class ClaimsController : ControllerBase
     {
         private readonly ClaimService _service;
@@ -16,7 +18,8 @@ namespace ClaimManagementApi.Controllers
         [HttpGet]
         public IActionResult GetClaims()
         {
-            return Ok(_service.GetClaims());
+            var claims = _service.GetClaims();
+            return Ok(claims);
         }
 
         [HttpPost]
