@@ -52,5 +52,24 @@ namespace ClaimManagementApi.Services
 
             return true;
         }
+
+        public Claim? UpdateClaim(int id, UpdateClaimDto dto)
+        {
+            var claim = _context.Claims.Find(id);
+
+            if (claim == null)
+            {
+                return null;
+            }
+
+            claim.Title = dto.Title;
+            claim.Description = dto.Description;
+            claim.Amount = dto.Amount;
+            claim.Status = dto.Status;
+
+            _context.SaveChanges();
+
+            return claim;
+        }
     }
 }

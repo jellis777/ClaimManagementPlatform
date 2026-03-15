@@ -55,6 +55,18 @@ namespace ClaimManagementApi.Controllers
             return NoContent();
         }
 
+        [HttpPut("{id}")]
+        public IActionResult UpdateClaim(int id, UpdateClaimDto dto)
+        {
+            var updatedClaim = _service.UpdateClaim(id, dto);
+
+            if (updatedClaim == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(updatedClaim);
+        }
 
 
     }
