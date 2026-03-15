@@ -42,5 +42,20 @@ namespace ClaimManagementApi.Controllers
             return Ok(claim);
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult DeleteClaim(int id)
+        {
+            var deleted = _service.DeleteClaim(id);
+
+            if (!deleted)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+
+
     }
 }

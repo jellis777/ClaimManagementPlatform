@@ -23,6 +23,7 @@ namespace ClaimManagementApi.Services
             return _context.Claims.Find(id);
         }
 
+
         public Claim CreateClaim(CreateClaimDto dto)
         {
             var claim = new Claim
@@ -36,6 +37,20 @@ namespace ClaimManagementApi.Services
             _context.SaveChanges();
 
             return claim;
+        }
+        public bool DeleteClaim(int id)
+        {
+            var claim = _context.Claims.Find(id);
+
+            if (claim == null)
+            {
+                return false;
+            }
+
+            _context.Claims.Remove(claim);
+            _context.SaveChanges();
+
+            return true;
         }
     }
 }
