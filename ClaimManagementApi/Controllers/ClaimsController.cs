@@ -22,6 +22,19 @@ namespace ClaimManagementApi.Controllers
             return Ok(claims);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetClaimById(int id)
+        {
+            var claim = _service.GetClaimById(id);
+
+            if (claim == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(claim);
+        }
+
         [HttpPost]
         public IActionResult CreateClaim(CreateClaimDto dto)
         {

@@ -18,6 +18,11 @@ namespace ClaimManagementApi.Services
             return _context.Claims.ToList();
         }
 
+        public Claim? GetClaimById(int id)
+        {
+            return _context.Claims.Find(id);
+        }
+
         public Claim CreateClaim(CreateClaimDto dto)
         {
             var claim = new Claim
