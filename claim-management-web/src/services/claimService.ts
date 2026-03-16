@@ -27,3 +27,13 @@ export async function createClaim(payload: CreateClaimRequest): Promise<Claim> {
 
   return response.json();
 }
+
+export async function deleteClaim(id: number): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete claim');
+  }
+}
