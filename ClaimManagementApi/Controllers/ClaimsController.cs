@@ -16,16 +16,16 @@ namespace ClaimManagementApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetClaims()
+        public async Task<IActionResult> GetClaims()
         {
-            var claims = _service.GetClaims();
+            var claims = await _service.GetClaimsAsync();
             return Ok(claims);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetClaimById(int id)
+        public async Task<IActionResult> GetClaimById(int id)
         {
-            var claim = _service.GetClaimById(id);
+            var claim = await _service.GetClaimByIdAsync(id);
 
             if (claim == null)
             {
@@ -36,16 +36,16 @@ namespace ClaimManagementApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateClaim(CreateClaimDto dto)
+        public async Task<IActionResult> CreateClaim(CreateClaimDto dto)
         {
-            var claim = _service.CreateClaim(dto);
+            var claim = await _service.CreateClaimAsync(dto);
             return Ok(claim);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteClaim(int id)
+        public async Task<IActionResult> DeleteClaim(int id)
         {
-            var deleted = _service.DeleteClaim(id);
+            var deleted = await _service.DeleteClaimAsync(id);
 
             if (!deleted)
             {
@@ -56,9 +56,9 @@ namespace ClaimManagementApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateClaim(int id, UpdateClaimDto dto)
+        public async Task<IActionResult> UpdateClaim(int id, UpdateClaimDto dto)
         {
-            var updatedClaim = _service.UpdateClaim(id, dto);
+            var updatedClaim = await _service.UpdateClaimAsync(id, dto);
 
             if (updatedClaim == null)
             {

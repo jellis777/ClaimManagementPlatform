@@ -1,6 +1,7 @@
 using ClaimManagementApi.Data;
 using ClaimManagementApi.DTOs;
 using ClaimManagementApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClaimManagementApi.Services
 {
@@ -13,18 +14,18 @@ namespace ClaimManagementApi.Services
             _context = context;
         }
 
-        public List<Claim> GetClaims()
+        public async Task<List<Claim>> GetClaimsAsync()
         {
-            return _context.Claims.ToList();
+            return await _context.Claims.ToListAsync();
         }
 
-        public Claim? GetClaimById(int id)
+        public async Task<Claim?> GetClaimByIdAsync(int id)
         {
-            return _context.Claims.Find(id);
+            return await _context.Claims.FindAsync(id);
         }
 
 
-        public Claim CreateClaim(CreateClaimDto dto)
+        public async Task<Claim> CreateClaimAsync(CreateClaimDto dto)
         {
             var claim = new Claim
             {
@@ -34,13 +35,13 @@ namespace ClaimManagementApi.Services
             };
 
             _context.Claims.Add(claim);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return claim;
         }
-        public bool DeleteClaim(int id)
+        public async Task<bool> DeleteClaimAsync(int id)
         {
-            var claim = _context.Claims.Find(id);
+            var claim = await _context.Claims.FindAsync(id);
 
             if (claim == null)
             {
@@ -48,14 +49,14 @@ namespace ClaimManagementApi.Services
             }
 
             _context.Claims.Remove(claim);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return true;
         }
 
-        public Claim? UpdateClaim(int id, UpdateClaimDto dto)
+        public async Task<Claim?> UpdateClaimAsync(int id, UpdateClaimDto dto)
         {
-            var claim = _context.Claims.Find(id);
+            var claim = await _context.Claims.FindAsync(id);
 
             if (claim == null)
             {
@@ -67,7 +68,7 @@ namespace ClaimManagementApi.Services
             claim.Amount = dto.Amount;
             claim.Status = dto.Status;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return claim;
         }
