@@ -18,3 +18,17 @@ export type CreateClaimFormData = {
   description: string;
   amount: string;
 };
+
+export type UpdateClaimRequest = {
+  title: string;
+  description: string;
+  amount: number;
+  status: string;
+};
+
+export type UpdateClaimFormData = {
+  title: string;
+  description: string;
+  amount: string;
+  status: string;
+};
