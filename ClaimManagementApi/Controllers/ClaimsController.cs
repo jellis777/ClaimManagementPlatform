@@ -39,7 +39,11 @@ namespace ClaimManagementApi.Controllers
         public async Task<IActionResult> CreateClaim(CreateClaimDto dto)
         {
             var claim = await _service.CreateClaimAsync(dto);
-            return Ok(claim);
+            return CreatedAtAction(
+                nameof(GetClaimById),
+                new { id = claim.Id },
+                claim
+            );
         }
 
         [HttpDelete("{id}")]
