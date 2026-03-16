@@ -6,3 +6,15 @@ export type Claim = {
   status: string;
   createdAt: string;
 };
+
+export type CreateClaimRequest = {
+  title: string;
+  description: string;
+  amount: number;
+};
+
+export type CreateClaimFormData = {
+  title: string;
+  description: string;
+  amount: string;
+};

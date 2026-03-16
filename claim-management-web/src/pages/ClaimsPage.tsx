@@ -1,23 +1,25 @@
 import { useEffect, useState } from 'react';
 import { getClaims } from '../services/claimService';
 import type { Claim } from '../types/claim';
+import CreateClaimForm from '../components/CreateClaimForm';
 
 function ClaimsPage() {
   const [claims, setClaims] = useState<Claim[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    async function loadClaims() {
-      try {
-        const data = await getClaims();
-        setClaims(data);
-      } catch (err) {
-        setError('Failed to load claims');
-      } finally {
-        setLoading(false);
-      }
+  async function loadClaims() {
+    try {
+      const data = await getClaims();
+      setClaims(data);
+    } catch {
+      setError('Failed to load claims');
+    } finally {
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
     loadClaims();
   }, []);
 
@@ -30,7 +32,9 @@ function ClaimsPage() {
   }
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-6">
+      <CreateClaimForm onClaimCreated={loadClaims} />
+
       {claims.length === 0 ? (
         <div className="rounded-xl bg-white p-6 shadow sm">
           <p className="text-slate-600">No claims found.</p>
