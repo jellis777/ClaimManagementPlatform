@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import ClaimCard from '../components/ClaimCard';
 import { getClaims, deleteClaim } from '../services/claimService';
 import type { Claim } from '../types/claim';
 import CreateClaimForm from '../components/CreateClaimForm';
@@ -52,15 +53,28 @@ function ClaimsPage() {
   }, []);
 
   if (loading) {
-    return <p>Loading claims...</p>;
+    return <p className="text-slate-600">Loading claims...</p>;
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return (
+      <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
+        {error}
+      </div>
+    );
   }
 
   return (
     <section className="space-y-6">
+      <div className="rounded-2xl bg-white p-6 shadow-sm">
+        <h2 className="text-2xl font-semibold text-slate-900">
+          {' '}
+          Claims Dashboard
+        </h2>
+        <p className="mt-2 text-slate-600">
+          Create, review, update, and manage claims in one place.
+        </p>
+      </div>
       <CreateClaimForm onClaimCreated={loadClaims} />
 
       {editingClaim ? (
@@ -71,44 +85,28 @@ function ClaimsPage() {
         />
       ) : null}
 
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold text-slate-900">All Claims</h3>
+        <p className="text-sm text-slate-500">
+          {claims.length} {claims.length === 1 ? 'claim' : 'claims'}
+        </p>
+      </div>
+
       {claims.length === 0 ? (
         <div className="rounded-xl bg-white p-6 shadow sm">
           <p className="text-slate-600">No claims found.</p>
         </div>
       ) : (
-        claims.map((claim) => (
-          <article key={claim.id} className="rounded-xl bg-white p-6 shadow-sm">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h2 className="text-xl font-semibold text-slate-900">
-                  {claim.title}
-                </h2>
-                <p className="mt-2 text-slate-600">{claim.description}</p>
-                <p className="mt-3 text-sm text-slate-700">
-                  Amount: ${claim.amount.toFixed(2)}
-                </p>
-                <p className="mt-1 text-sm text-slate-700">
-                  Status: {claim.status}
-                </p>
-              </div>
-              <div>
-                <button
-                  onClick={() => handleEdit(claim)}
-                  className="rounded-lg bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700"
-                >
-                  Edit
-                </button>
-
-                <button
-                  onClick={() => handleDelete(claim.id)}
-                  className="rounded-lg bg-red-500 px-3 py-1 text-sm text-white hover:bg-red-600"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </article>
-        ))
+        <div className="space-y-4">
+          {claims.map((claim) => (
+            <ClaimCard
+              key={claim.id}
+              claim={claim}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          ))}
+        </div>
       )}
     </section>
   );
