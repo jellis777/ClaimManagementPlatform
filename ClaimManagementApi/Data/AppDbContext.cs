@@ -11,5 +11,6 @@ namespace ClaimManagementApi.Data
         }
 
         public DbSet<Claim> Claims => Set<Claim>();
+        public DbSet<User> Users => Set<User>();
     }
 }

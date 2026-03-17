@@ -1,11 +1,13 @@
 using ClaimManagementApi.DTOs;
 using ClaimManagementApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClaimManagementApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ClaimsController : ControllerBase
     {
         private readonly ClaimService _service;
@@ -36,6 +38,7 @@ namespace ClaimManagementApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Adjuster")]
         public async Task<IActionResult> CreateClaim(CreateClaimDto dto)
         {
             var claim = await _service.CreateClaimAsync(dto);
@@ -46,20 +49,8 @@ namespace ClaimManagementApi.Controllers
             );
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClaim(int id)
-        {
-            var deleted = await _service.DeleteClaimAsync(id);
-
-            if (!deleted)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
-        }
-
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin,Adjuster")]
         public async Task<IActionResult> UpdateClaim(int id, UpdateClaimDto dto)
         {
             var updatedClaim = await _service.UpdateClaimAsync(id, dto);
@@ -72,6 +63,19 @@ namespace ClaimManagementApi.Controllers
             return Ok(updatedClaim);
         }
 
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteClaim(int id)
+        {
+            var deleted = await _service.DeleteClaimAsync(id);
+
+            if (!deleted)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
 
     }
 }

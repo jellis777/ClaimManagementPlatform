@@ -6,8 +6,17 @@ import type {
 
 const API_BASE_URL = 'http://localhost:5266/api/claims';
 
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('token');
+
+  return {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
+};
+
 export async function getClaims(): Promise<Claim[]> {
-  const response = await fetch(API_BASE_URL);
+  const response = await fetch(API_BASE_URL, { headers: getAuthHeaders() });
 
   if (!response.ok) {
     throw new Error('Failed to fetch claims');
@@ -19,9 +28,7 @@ export async function getClaims(): Promise<Claim[]> {
 export async function createClaim(payload: CreateClaimRequest): Promise<Claim> {
   const response = await fetch(API_BASE_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify(payload),
   });
 
@@ -38,9 +45,7 @@ export async function updateClaim(
 ): Promise<Claim> {
   const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify(payload),
   });
 
@@ -54,6 +59,7 @@ export async function updateClaim(
 export async function deleteClaim(id: number): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: 'DELETE',
+    headers: getAuthHeaders(),
   });
 
   if (!response.ok) {
