@@ -53,7 +53,7 @@ if (builder.Environment.IsEnvironment("Testing"))
 else
 {
     builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 }
 
 builder.Services.AddScoped<ClaimService>();
@@ -110,7 +110,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("FrontendPolicy");
 

@@ -21,8 +21,15 @@ function ClaimsPage() {
       const data = await getClaims();
       setClaims(data);
       setError('');
-    } catch {
-      setError('Failed to load claims');
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to load claims';
+      if (message.includes('Unauthorized')) {
+        logout();
+        navigate('/login');
+        return;
+      }
+      setError(message);
     } finally {
       setLoading(false);
     }

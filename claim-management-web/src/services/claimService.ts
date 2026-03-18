@@ -6,20 +6,21 @@ import type {
 
 const API_BASE_URL = 'http://localhost:5266/api/claims';
 
-const getAuthHeaders = () => {
+const getAuthHeaders = (): HeadersInit => {
   const token = localStorage.getItem('token');
 
-  return {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
-  };
+  return token
+    ? { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+    : { 'Content-Type': 'application/json' };
 };
 
 export async function getClaims(): Promise<Claim[]> {
   const response = await fetch(API_BASE_URL, { headers: getAuthHeaders() });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch claims');
+    if (response.status === 401)
+      throw new Error('Unauthorized - please log in again');
+    throw new Error(`Failed to fetch claims (${response.status})`);
   }
 
   return response.json();
