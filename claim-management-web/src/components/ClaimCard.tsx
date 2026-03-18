@@ -6,9 +6,12 @@ type ClaimCardProps = {
   claim: Claim;
   onEdit: (claim: Claim) => void;
   onDelete: (id: number) => void;
+  userRole?: string;
 };
 
-function ClaimCard({ claim, onEdit, onDelete }: ClaimCardProps) {
+function ClaimCard({ claim, onEdit, onDelete, userRole }: ClaimCardProps) {
+  const isAdmin = userRole === 'Admin';
+  const canEdit = isAdmin || userRole === 'Adjuster';
   return (
     <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -35,19 +38,23 @@ function ClaimCard({ claim, onEdit, onDelete }: ClaimCardProps) {
         </div>
 
         <div className="flex shrink-0 gap-2">
-          <button
-            onClick={() => onEdit(claim)}
-            className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
-          >
-            Edit
-          </button>
+          {canEdit && (
+            <button
+              onClick={() => onEdit(claim)}
+              className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            >
+              Edit
+            </button>
+          )}
 
-          <button
-            onClick={() => onDelete(claim.id)}
-            className="rounded-lg bg-red-500 px-3 py-2 text-sm font-medium text-white hover:bg-red-600"
-          >
-            Delete
-          </button>
+          {isAdmin && (
+            <button
+              onClick={() => onDelete(claim.id)}
+              className="rounded-lg bg-red-500 px-3 py-2 text-sm font-medium text-white hover:bg-red-600"
+            >
+              Delete
+            </button>
+          )}
         </div>
       </div>
     </article>

@@ -41,5 +41,5 @@ export const register = async (
     throw new Error(result.message || 'Registration failed');
   }
 
-  return response.json();
+  return result;
 };
